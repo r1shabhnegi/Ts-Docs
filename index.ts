@@ -324,3 +324,316 @@ const myInstance = new MyClass();
 // console.log(`current value: ${myInstance.myProperty}`);
 myInstance.myProperty = 10;
 // console.log(`current value: ${myInstance.myProperty}`);
+
+// Interface
+
+interface Computer {
+  name: string;
+  ram: number;
+  hdd: number;
+}
+
+const computerExample: Computer = {
+  name: 'i7',
+  ram: 7,
+  hdd: 100,
+};
+
+// console.log(computerExample.hdd);
+
+interface Movie {
+  readonly name: string;
+  ratings: number;
+  genre?: string;
+}
+
+const movie1: Movie = {
+  name: 'star war',
+  ratings: 9,
+  genre: 'action',
+};
+
+// console.log(movie1.name);
+
+// movie1.name = "sadsaf"  ERR - readonly
+
+interface MathOperation {
+  (x: number, y: number): number;
+}
+
+const add: MathOperation = (a, b) => a + b;
+const subtract: MathOperation = (a, b) => a - b;
+
+// console.log(add(2, 5));
+// console.log(subtract(2, 5));
+
+interface Person33 {
+  firstName: string;
+  lastName: string;
+  age: number;
+  sayHello(): void;
+}
+
+function greet33(person: Person33) {
+  console.log(`hello, ${person.firstName} ${person.lastName}`);
+  person.sayHello();
+}
+
+const john33: Person33 = {
+  firstName: 'john',
+  lastName: 'doe',
+  age: 33,
+  sayHello() {
+    console.log('hello');
+    // return 'hello';
+  },
+};
+const justin33: Person33 = {
+  firstName: 'justin',
+  lastName: 'dose',
+  age: 35,
+  sayHello() {
+    console.log('what up');
+    // return 'what up';
+  },
+};
+
+// greet33(john33);
+// greet33(justin33);
+
+interface Song {
+  songName: string;
+  singerName: string;
+  printSongInfo(songName: string, singerName: string): string;
+}
+
+const song1: Song = {
+  songName: 'natural',
+  singerName: 'Imagine dragon',
+  printSongInfo: (songName, singerName) => {
+    return `Song: ${songName}, singer: ${singerName}`;
+  },
+};
+
+// console.log(song1.printSongInfo('Natural', 'Imagine Dragon'));
+
+interface MovieDetails {
+  readonly name: string;
+  ratings: number;
+  printMovieInfo(name: string, price: number, ratings: number): string | number;
+}
+
+interface MovieGenre extends MovieDetails {
+  genre: string;
+}
+
+const movie4: MovieGenre = {
+  name: 'star wars',
+  genre: 'action',
+  ratings: 8.9,
+  printMovieInfo(
+    name: string,
+    price: number,
+    ratings: number
+  ): string | number {
+    return `Movie name: ${name} Price: ${price} Ratings: ${ratings}`;
+  },
+};
+
+const res44 = movie4.printMovieInfo('john', 34, 8);
+// console.log(res44);
+
+interface Vehicle {
+  start(): void;
+  stop(): void;
+}
+
+class Car implements Vehicle {
+  start(): void {
+    console.log('car is starting...');
+  }
+  stop(): void {
+    console.log('car is stopped');
+  }
+}
+
+const myCar = new Car();
+// myCar.start();
+
+// Orgiginal inferface
+
+interface Car {
+  brand: string;
+  start(): void;
+}
+
+// Declaration merging (interface extension)
+interface Car {
+  modal: string;
+  stop(): void;
+}
+
+const myCarr: Car = {
+  brand: 'bmw',
+  modal: 'm3',
+  start() {
+    console.log('start');
+  },
+  stop() {
+    console.log('stop');
+  },
+};
+
+// myCarr.start();
+
+// Generics
+
+function printNumber(item: number, defaultValue: number): [number, number] {
+  return [item, defaultValue];
+}
+
+function printString(item: string, defaultValue: string): [string, string] {
+  return [item, defaultValue];
+}
+function printBoolean(item: any, defaultValue: any): [any, any] {
+  return [item, defaultValue];
+}
+
+const num12 = printNumber(12, 20);
+const str12 = printString('hello', 'world');
+const bool12 = printBoolean('hello', true); // ERR
+// console.log(num12);
+// console.log(str12);
+
+// GEn ^
+function uniqueDataTypesFunc<T>(item: T, defaultVal: T): [T, T] {
+  return [item, defaultVal];
+}
+
+// const res9 = uniqueDataTypesFunc<number>(2, 4);
+// const str9 = uniqueDataTypesFunc<string>('Hello', 'Luna');
+// console.log(res9);
+// console.log(str9);
+
+interface Dog66 {
+  name: string;
+  bread: string;
+}
+
+const dog5 = uniqueDataTypesFunc<Dog66>(
+  { name: 'buddy', bread: 'labrador' },
+  { name: 'Default', bread: 'unknown' }
+);
+
+// console.log(dog5);
+
+function getRandomKeyValuePair<T>(obj: { [key: string]: T }): {
+  key: string;
+  value: T;
+} {
+  const keys = Object.keys(obj);
+  const randKey = keys[Math.floor(Math.random() * keys.length)];
+  return { key: randKey, value: obj[randKey] };
+}
+
+const stringObject = { a: 'apple', b: 'banana', c: 'cherry' };
+const res77 = getRandomKeyValuePair<string>(stringObject);
+// console.log(res77);
+
+function filterArray<T>(array: T[], conditions: (item: T) => boolean): T[] {
+  return array.filter((item) => conditions(item));
+}
+
+const numberArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const evenNumbers = filterArray<number>(numberArray, (num) => num % 2 === 0);
+
+// console.log(evenNumbers);
+
+function reversePair7<T, U>(value1: T, value2: U): [U, T] {
+  return [value2, value1];
+}
+
+const reversPair45 = reversePair7('hello', 20);
+// console.log(reversPair45);
+
+// ///////////////
+class Box<T> {
+  private content: T;
+
+  constructor(initialContent: T) {
+    this.content = initialContent;
+  }
+
+  getContent(): T {
+    return this.content;
+  }
+
+  setContent(newContent: T): void {
+    this.content = newContent;
+  }
+}
+
+const stringBox = new Box<string>('Hello');
+// console.log(stringBox.getContent());
+
+// Type Narrowing
+
+// type
+type MyType = string | number;
+
+function exampleFunction(value: MyType): void {
+  if (typeof value === 'string') {
+    console.log(value.toUpperCase());
+  } else {
+    console.log(value.toFixed(2));
+  }
+}
+
+// exampleFunction('Hello'); // hello
+// exampleFunction(20); //20
+
+class Dog45 {
+  bark(): void {
+    console.log('woff woff');
+  }
+}
+
+class Cat45 {
+  meow(): void {
+    console.log('Meow');
+  }
+}
+
+function animalSound(animal: Dog45 | Cat45): void {
+  if (animal instanceof Dog45) {
+    animal.bark();
+  } else {
+    animal.meow();
+  }
+}
+
+const myDoggy = new Dog45();
+const mtCatty = new Cat45();
+
+// animalSound(myDoggy);
+
+type Employee = {
+  id: number;
+  name: string;
+};
+
+type Manager = {
+  department: string;
+  role: string;
+};
+
+type ManagerWithEmployeeInfo = Employee & Manager;
+
+const manager: ManagerWithEmployeeInfo = {
+  id: 123,
+  name: 'Alex',
+  department: 'Engineering',
+  role: 'Team lead',
+};
+
+// console.log(manager.id);
